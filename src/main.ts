@@ -52,15 +52,8 @@ Extract company names from user requests and retrieve detailed information about
 ## Process
 1. Use extractCompanyNameTool to extract one or more company names in the user's input. Only extract company names that are included in the request.
 2. For each identified company, call callCrunchbaseScraperTool to fetch company details.
-3. Organize and present the information in a clear, structured format to the user.
-
-## Implementation Steps
-1. Parse the user's input to understand their request.
-2. Call extractCompanyNameTool with the company names from the user's input.
-3. For each company name returned by extractCompanyNameTool:
-   - Call callCrunchbaseScraperTool with the company name as the parameter
-   - Input: The extracted company name
-   - Output: Detailed company information from Crunchbase in JSON format
+3. Search the web for news related to the company.
+4. Organize and present the relevant information in a clear, JSON structured format to the user.
           `)]
       }, {
         recursionLimit: 10

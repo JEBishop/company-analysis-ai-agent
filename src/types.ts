@@ -1,22 +1,20 @@
-export interface CompanyDetails {
-  title: string;
-  company: string;
-  location: string;
-  link: string;
-  match_score: number;
-  match_reason: string;
-  sample_cover_letter: string;
-}
-
 export interface Input {
   companyRequest: string;
   OPENAI_API_KEY: string;
 }
 
-export interface Output {
-  results: any;
+export interface NewsStory {
+  title: string,
+  source: string,
+  link: string,
+  summary: string
 }
 
+
+export interface Output {
+  results: any;
+  news: NewsStory[];
+}
 
 export const responseSchema = {
   type: "object",
@@ -26,7 +24,13 @@ export const responseSchema = {
       items: {
         type: ["string", "number", "boolean", "object", "null"]
       }
-    }
+    },
+    news: { type: "array", items: { type: "object", properties: {
+      title: { type: "string" },
+      source: { type: "string" },
+      link: { type: "string" },
+      summary: { type: "string" }
+    }, required: ["title", "source", "link", "summary"] } },
   },
   required: ["results"]
 };
