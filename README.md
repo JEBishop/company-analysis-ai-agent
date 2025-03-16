@@ -1,74 +1,96 @@
-## TypeScript Crawlee & CheerioCrawler template
+# AI Agent Company Analyzer
 
-A template example built with [Crawlee](https://crawlee.dev/) to scrape data from a website using [Cheerio](https://cheerio.js.org/) wrapped into [CheerioCrawler](https://crawlee.dev/api/cheerio-crawler/class/CheerioCrawler).
+## Overview
+The AI Agent Company Analyzer is an Apify Actor that takes a query as input, extracts the company name, and gathers detailed information from various sources across the web. The actor provides both structured JSON output and an HTML report containing the findings.
 
-## Included features
+## Features
+- Extracts company information from a given query
+- Gathers details such as basic company information, funding history, employee statistics, and headquarters location
+- Collects relevant news articles about the company
+- Generates structured JSON output and an HTML report
 
-- **[Apify SDK](https://docs.apify.com/sdk/js)** - toolkit for building [Actors](https://apify.com/actors)
-- **[Crawlee](https://crawlee.dev/)** - web scraping and browser automation library
-- **[Input schema](https://docs.apify.com/platform/actors/development/input-schema)** - define and easily validate a schema for your Actor's input
-- **[Dataset](https://docs.apify.com/sdk/python/docs/concepts/storages#working-with-datasets)** - store structured data where each object stored has the same attributes
-- **[Cheerio](https://cheerio.js.org/)** - a fast, flexible & elegant library for parsing and manipulating HTML and XML
+## Input
+The Actor requires the following input in JSON format:
 
-## How it works
-
-This code is a TypeScript script that uses [Crawlee CheerioCrawler](https://crawlee.dev/api/cheerio-crawler/class/CheerioCrawler) framework to crawl a website and extract the data from the crawled URLs with Cheerio. It then stores the website titles in a dataset.
-
-- The crawler starts with URLs provided from the input `startUrls` field defined by the input schema. Number of scraped pages is limited by `maxPagesPerCrawl` field from input schema.
-- The crawler uses `requestHandler` for each URL to extract the data from the page with the Cheerio library and to save the title and URL of each page to the dataset. It also logs out each result that is being saved.
-
-## Resources
-
-- [Video tutorial](https://www.youtube.com/watch?v=yTRHomGg9uQ) on building a scraper using CheerioCrawler
-- [Written tutorial](https://docs.apify.com/academy/web-scraping-for-beginners/challenge) on building a scraper using CheerioCrawler
-- [Web scraping with Cheerio in 2023](https://blog.apify.com/web-scraping-with-cheerio/)
-- How to [scrape a dynamic page](https://blog.apify.com/what-is-a-dynamic-page/) using Cheerio
-- [TypeScript vs. JavaScript: which to use for web scraping?](https://blog.apify.com/typescript-vs-javascript-crawler/)
-- [Integration with Zapier](https://apify.com/integrations), Make, Google Drive and others
-- [Video guide on getting scraped data using Apify API](https://www.youtube.com/watch?v=ViYYDHSBAKM)
-- A short guide on how to build web scrapers using code templates:
-
-[web scraper template](https://www.youtube.com/watch?v=u-i-Korzf8w)
-
-
-## Getting started
-
-For complete information [see this article](https://docs.apify.com/platform/actors/development#build-actor-locally). To run the actor use the following command:
-
-```bash
-apify run
+```json
+{
+    "companyRequest": "Tell me about Microsoft's business",
+    "OPENAI_API_KEY": "YOUR_OPENAI_API_KEY" //optional
+}
 ```
 
-## Deploy to Apify
+### Input Fields
+- `companyRequest` (string): A query containing the company name and the type of information required.
+- `OPENAI_API_KEY` (string - optional): Your OpenAI API key for natural language processing.
 
-### Connect Git repository to Apify
+## Output
+The Actor generates two types of output:
 
-If you've created a Git repository for the project, you can easily connect to Apify:
+### JSON Output
+The structured JSON output includes details about the company, such as:
 
-1. Go to [Actor creation page](https://console.apify.com/actors/new)
-2. Click on **Link Git Repository** button
+```json
+{
+    "results": [
+        {
+            "basic_info": {
+                "name": "Microsoft",
+                "universal_name": "microsoft",
+                "description": "Every company has a mission...",
+                "website": "https://news.microsoft.com/",
+                "linkedin_url": "https://www.linkedin.com/company/microsoft/",
+                "specialties": ["AI", "Cloud Computing", "Gaming"],
+                "industries": ["Computer Software"],
+                "is_verified": true
+            },
+            "stats": {
+                "employee_count": 239069,
+                "follower_count": 25034990
+            },
+            "locations": {
+                "headquarters": {
+                    "country": "US",
+                    "state": "Washington",
+                    "city": "Redmond",
+                    "postal_code": "98052",
+                    "line1": "1 Microsoft Way"
+                }
+            },
+            "funding": {
+                "total_rounds": 2,
+                "latest_round": {
+                    "type": "Post IPO equity",
+                    "date": { "year": 2022, "month": 12, "day": 9 },
+                    "url": "https://www.crunchbase.com/funding_round/microsoft-post-ipo-equity..."
+                }
+            },
+            "news": [
+                {
+                    "title": "Microsoft to invest $3 billion in India...",
+                    "source": "Reuters",
+                    "link": "https://www.reuters.com/...",
+                    "summary": "Microsoft has announced a $3 billion investment..."
+                }
+            ]
+        }
+    ]
+}
+```
 
-### Push project on your local machine to Apify
+### HTML Report
+![Sample HTML Report](sample_report.png)
+An HTML report is also generated, summarizing the collected information in a visually structured format.
 
-You can also deploy the project on your local machine to Apify without the need for the Git repository.
+## Usage
+1. Deploy the Actor on Apify.
+2. Provide the required input (company query and API key).
+3. Execute the Actor and retrieve the JSON output or the HTML report from the Apify dataset.
 
-1. Log in to Apify. You will need to provide your [Apify API Token](https://console.apify.com/account/integrations) to complete this action.
+## Example Use Case
+- Competitive analysis for businesses
+- Market research
+- Tracking company news and trends
 
-    ```bash
-    apify login
-    ```
-
-2. Deploy your Actor. This command will deploy and build the Actor on the Apify Platform. You can find your newly created Actor under [Actors -> My Actors](https://console.apify.com/actors?tab=my).
-
-    ```bash
-    apify push
-    ```
-
-## Documentation reference
-
-To learn more about Apify and Actors, take a look at the following resources:
-
-- [Apify SDK for JavaScript documentation](https://docs.apify.com/sdk/js)
-- [Apify SDK for Python documentation](https://docs.apify.com/sdk/python)
-- [Apify Platform documentation](https://docs.apify.com/platform)
-- [Join our developer community on Discord](https://discord.com/invite/jyEM2PRvMU)
+## Limitations
+- The quality of extracted information depends on the availability of online data sources.
+- API rate limits may apply when using OpenAI for query processing.

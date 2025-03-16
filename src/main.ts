@@ -3,11 +3,12 @@ import log from '@apify/log';
 import { ChatOpenAI } from "@langchain/openai";
 import { HumanMessage } from "@langchain/core/messages";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
-import type { Input } from './types.js';
+import type { Input, Output } from './types.js';
 import { agentTools } from './tools.js'
 import { responseSchema } from './types.js'
 import { setContextVariable } from "@langchain/core/context";
 import { RunnableLambda } from "@langchain/core/runnables";
+import { formatHtml } from './utils.js';
 
 await Actor.init();
 const input = await Actor.getInput<Input>();
@@ -47,28 +48,33 @@ try {
       const modelResponse = await agent.invoke({
         messages: [new HumanMessage(`
 ## Task Description
-Extract company names from user requests and retrieve detailed information about those companies.
+Act as a company research agent that extracts company names from user requests and retrieves comprehensive information about those companies, delivering insights in a structured format.
 
 ## Process
-1. Use extractCompanyNameTool to extract one or more company names in the user's input. Only extract company names that are included in the request.
-2. For each identified company, call callCrunchbaseScraperTool to fetch company details.
-3. Search the web for news related to the company.
-4. Organize and present the relevant information in a clear, JSON structured format to the user.
+1. Analyze the user's request to identify and extract exactly one company name mentioned in their input. Only extract a company that is explicitly mentioned.
+2. Retrieve detailed company information by calling the call_linkedin_scraper function with the extracted company name.
+3. Perform a web search to gather recent news articles, press releases, and important developments related to the company.
+4. Return this data in a JSON format.
+## Example Interaction
+User: "Can you tell me about Microsoft's recent cloud computing initiatives?"
+Agent: [Extracts "Microsoft" → Retrieves company data → Searches for recent cloud computing news → Returns structured information about Microsoft's cloud computing initiatives]
           `)]
       }, {
         recursionLimit: 10
       });
-      return modelResponse.structuredResponse;
+      return modelResponse.structuredResponse as Output;
     }
   );
 
-  const output: any = await handleRunTimeRequestRunnable.invoke({ 
+  const output: Output = await handleRunTimeRequestRunnable.invoke({ 
     companyRequest: companyRequest
   });
-
+  
   log.info(JSON.stringify(output));
 
-  await Actor.charge({ eventName: 'job-results-output', count: output.length });
+  await Actor.setValue('company_report.html', formatHtml(output), { contentType: 'text/html' });
+
+  await Actor.charge({ eventName: 'company-output' });
 
   await Actor.pushData(output);
 } catch (e: any) {

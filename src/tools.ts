@@ -20,34 +20,34 @@ const extractCompanyNameTool = tool(
     name: 'extract_company_name',
     description: 'Convert the user\'s request into a JSON object with the company name.',
     schema: z.object({
-      companyName: z.string().describe('The name of the company to scrape from Crunchbase.')
+      companyName: z.string().describe('The name of the company to scrape.')
     })
   }
 )
 
-const callCrunchbaseScraperTool = tool(
+const callLinkedInScraperTool = tool(
   async (input) => {
-    log.info('in call_crunchbase_scraper');
+    log.info('in call_linkedin_scraper');
     log.info(JSON.stringify(input));
     try {
-      // harvest/crunchbase-company-details-scraper
-      const run = await client.actor("tDkWrG7WqwYB4ZsTs").call({
-        crunchbaseUrl: `https://www.crunchbase.com/organization/${input.companyName}`
+      // apimaestro/linkedin-company-detail
+      const run = await client.actor("ipHw77V2NMJPy8sbS").call({
+        identifier: input.companyName
       });
       const { items: listings } = await client.dataset(run.defaultDatasetId).listItems();
     
       log.info(`Found ${listings.length}.`);
       return JSON.stringify(listings);
     } catch (err: any) {
-      log.error('call_crunchbase_scraper error: ' + err.message);
+      log.error('call_linkedin_scraper error: ' + err.message);
       return JSON.stringify({ error: err.message });
     }
   },
   {
-    name: 'call_crunchbase_scraper',
-    description: 'Fetch company details from Crunchbase.',
+    name: 'call_linkedin_scraper',
+    description: 'Fetch company details from LinkedIn.',
     schema: z.object({
-      companyName: z.string().describe('The name of the company to scrape from Crunchbase.')
+      companyName: z.string().describe('The name of the company to scrape.')
     })
   }
 );
@@ -77,6 +77,6 @@ const webSearchTool = tool(
 
 export const agentTools = [
   extractCompanyNameTool,
-  callCrunchbaseScraperTool,
+  callLinkedInScraperTool,
   webSearchTool
 ];
