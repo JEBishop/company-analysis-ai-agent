@@ -17,5 +17,5 @@
             "editor": "textfield"
         }
     },
-    "required": ["OPENAI_API_KEY", "companyRequest"]
+    "required": ["companyRequest"]
 }
