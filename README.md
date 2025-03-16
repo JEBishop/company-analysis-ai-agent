@@ -26,6 +26,10 @@ The Actor requires the following input in JSON format:
 ## Output
 The Actor generates two types of output:
 
+### HTML Report
+![Sample HTML Report](sample_report.png)
+An HTML report is also generated, summarizing the collected information in a visually structured format.
+
 ### JSON Output
 The structured JSON output includes details about the company, such as:
 
@@ -76,10 +80,6 @@ The structured JSON output includes details about the company, such as:
     ]
 }
 ```
-
-### HTML Report
-![Sample HTML Report](sample_report.png)
-An HTML report is also generated, summarizing the collected information in a visually structured format.
 
 ## Usage
 1. Deploy the Actor on Apify.
