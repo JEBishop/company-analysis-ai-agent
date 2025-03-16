@@ -1,24 +1,21 @@
 {
-    "title": "CheerioCrawler Template",
+    "title": "AI Company Researcher",
     "type": "object",
     "schemaVersion": 1,
     "properties": {
-        "startUrls": {
-            "title": "Start URLs",
-            "type": "array",
-            "description": "URLs to start with.",
-            "editor": "requestListSources",
-            "prefill": [
-                {
-                    "url": "https://crawlee.dev"
-                }
-            ]
+        "companyRequest": {
+            "title": "Company Request",
+            "type": "string",
+            "description": "The company to research.",
+            "editor": "textfield",
+            "prefill": "Tell me about Microsoft's business."
         },
-        "maxRequestsPerCrawl": {
-            "title": "Max Requests per Crawl",
-            "type": "integer",
-            "description": "Maximum number of requests that can be made by this crawler.",
-            "default": 100
+        "OPENAI_API_KEY": {
+            "title": "OpenAI API Key",
+            "type": "string",
+            "description": "The API key to use for prompting ChatGPT.",
+            "editor": "textfield"
         }
-    }
+    },
+    "required": ["OPENAI_API_KEY", "companyRequest"]
 }
