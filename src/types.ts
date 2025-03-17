@@ -211,7 +211,7 @@ export const responseSchema = {
               crunchbase: { type: "string", format: "uri" }
             }
           }
-        }
+        }, required: ["summary", "basic_info", "stats", "locations", "media", "funding", "links"]
       }
     },
     news: { type: "array", items: { type: "object", properties: {

@@ -28,7 +28,7 @@ The Actor requires the following input in JSON format:
 The Actor generates two types of output:
 
 ### HTML Report
-![Sample HTML Report](sample_report.png)
+![Sample HTML Report](https://raw.githubusercontent.com/JEBishop/company-analysis-ai-agent/main/sample_report.png)
 An HTML report is also generated, summarizing the collected information in a visually structured format.
 
 ### JSON Output
