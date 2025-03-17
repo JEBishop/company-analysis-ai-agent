@@ -7,6 +7,7 @@ The AI Agent Company Analyzer is an Apify Actor that takes a query as input, ext
 - Extracts company information from a given query
 - Gathers details such as basic company information, funding history, employee statistics, and headquarters location
 - Collects relevant news articles about the company
+- Parses the details to create a concise summary of the company.
 - Generates structured JSON output and an HTML report
 
 ## Input

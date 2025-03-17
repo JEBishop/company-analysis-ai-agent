@@ -19,6 +19,8 @@ export const formatHtml = (data: any) => {
         </head>
         <body>
             <h1>${company?.basic_info?.name}</h1>
+            <h2>Summary</h2>
+            <p>${company?.summary}</p>
             <h2>Description</h2>
             <p>${company?.basic_info?.description}</p>
             <h2>Website</h2>

@@ -97,6 +97,10 @@ export const responseSchema = {
       items: {
         type: "object",
         properties: {
+          summary: {
+            type: "string",
+            description: "A brief (4-6 sentence) summary of the company's profile."
+          },
           basic_info: {
             type: "object",
             properties: {
